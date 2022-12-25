@@ -1,25 +1,35 @@
+# Definition for singly-linked list.
 class ListNode(object):
-  def __init__(self, val=0, next=None):
-    self.val = val
-    self.next = next
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 class Solution(object):
-  def isPalindrome(self, head):
-    """
-    :type head: ListNode
-    :rtype: bool
-    """
-    if head is None: return True
-    if head.next is None: return False
+    def isPalindrome(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        if head is None or head.next is None: return True
 
-    first = head.val
-    itr = head.next
-    if itr.next is None: return True if first == itr.val else False
-    while itr.next.next:
-      itr = itr.next
-    last = itr.next.val
-    itr.next = None
+        # Find halfway point
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
 
-    if first == last:
-      self.isPalindrome(itr)
-    else: return False
+        # Reverse second half
+        prev = None
+        curr = slow
+        while curr:
+            next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next
+
+        # Check if halves are identical
+        while prev:
+            if head.val != prev.val: return False
+            head = head.next
+            prev = prev.next
+        return True

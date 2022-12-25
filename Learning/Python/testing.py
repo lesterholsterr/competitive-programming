@@ -19,5 +19,3 @@ print(apple_stock.price)
 
 apple_stock.quote()
 # del apple_stock.ticker
-
-print("string " + str(4))
