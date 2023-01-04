@@ -19,3 +19,14 @@ print(apple_stock.price)
 
 apple_stock.quote()
 # del apple_stock.ticker
+
+def a(s, t):
+  for c in s:
+    try:
+      t = t.replace(c, '', 1)
+    except:
+      return False
+  return True if t == '' else False
+print(a('ab', 'a'))
+
+print("hello".replace('X', '', 1))
