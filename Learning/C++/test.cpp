@@ -4,9 +4,13 @@ using namespace std;
 
 int main() 
 {
-    int a = 5;
-    int *ptr = &a;
-    cout << "ptr = " << ptr << endl;
-    cout << "*ptr = " << *ptr << endl;
+    // NULL POINTER
+    int *var = NULL;
+    cout << var; // Not working, should output nothing?
+
+
+    // int *ptr = &a;
+    // cout << "ptr = " << ptr << endl;
+    // cout << "*ptr = " << *ptr << endl;
     return 0;
 }

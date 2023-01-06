@@ -3,105 +3,101 @@
 using namespace std;
 
 // Call by value
-void func(int x) {
-    x = 200;
+void f(int x) {
+    x = 200; // x is only locally modified
     cout << "in func, x = " << x << endl;
 }
 
 // Call by reference
-void func (int *x) {
-    *x = 200;
+void f(int *x) {
+    *x = 200; // The thing pointing to x = 100 changes to x = 200
+    // This permanently affects to value of x outside this function
     cout << "in func, x = " << x << endl;
 }
 
 int main() 
 {
+    // References and Pointers
     int a = 5;
-    // ptr points to the address of a
-    int* ptr = &a;
-    // my guess is the * fetches the value of the variable stored at the address of ptr
-    cout << *ptr;
+    cout << &a << endl; // &a has type int*
+    int *b = &a;
+    *b += 1; // Changing the value of *b changes a too
+    cout << *b << " " << a << endl;
 
-    // // NULL POINTER
-    // int *var = NULL;
-    // // Not working, should output nothing?
-    // cout << *var;
+    // NULL POINTER
+    int *var = NULL;
+    cout << var << endl; // Output: 0. The address of nothing is nothing!
+    // printing *var will lead to a segmentation error. Why is this?
 
-    // VOID POINTER
-    int a = 5;
-    void *ptr = &a;
-    cout << *(int *)ptr;
+    // VOID/GENERIC POINTER
+    void *c = &a;
+    cout << *(int *)c << endl; // Output: 6
+    // Explanation: We cast c to convert it to an int*, then deference it with another *
+    // Use case: Passing pointers to functions that take unknown data types
 
-    // WILD POINTER
-    int *ptr;
-    cout << *ptr;
+    // WILD POINTER - simply refers to an uninitialized/deleted/freed/invalid object
 
     // DANGLING POINTER
-    int *ptr = (int *)malloc(sizeof(int));
-    int a = 5;
-    ptr = &a;
-    free(ptr);
-    cout << *ptr;
+    int *d = (int *)malloc(sizeof(int));
+    d = &a;
+    // free(d); --> doing this gives us an Abort trap (whatever that is)
 
     // POINTER ARITHMETIC
     int arr[7] = {2, 3, 5, 7, 11, 13, 17};
     int *tr = &arr[6];
-    int n = 2;
+    int m = 2;
     for (int i = 0; i < 7; i++) {
-        cout << *tr << endl;
-        tr -= n;
-    }
+        cout << *tr << " ";
+        tr -= m;
+    } cout << endl;
+    // notice that after 4 iterations, tr no longer points to an element
+    // in the array, so we get random numbers
 
     // POINTER TO POINTER
-    int var, *ptr1, **ptr2;
-    var = 5;
-    ptr1 = &var;
+    int *ptr1, **ptr2;
+    ptr1 = &a;
     ptr2 = &ptr1;
-    cout << "var = " << var << endl;
+    cout << "a = " << a << endl;
     cout << "ptr1 = " << *ptr1 << endl;
-    // **ptr2 = *ptr1 = var = 5
+    // **ptr2 = *ptr1 = a = 5
     cout << "ptr2 = " << **ptr2 << endl;
 
     // ARRAY OF POINTERS
-    int a[3] = {2, 3, 5};
-    int *ptr[3];
+    int arr2[3] = {2, 3, 5};
+    int *parr[3];
     for(int i = 0; i < 3; i++) {
-        ptr[i] = &a[i];
-        cout << *ptr[i] << endl;
-    }
+        parr[i] = &arr2[i];
+        cout << *parr[i] << " ";
+    } cout << endl;
 
     // CALL BY VALUE
-    // Basically just local vs global scope right?
     int x = 100;
-    func(x);
+    f(x);
     cout << "in main, x = " << x << endl;
 
     // CALL BY REFERENCE
-    // Important! Addresses modified anywhere are global in scope (that's my guess at least)
-    int x = 100;
-    func(&x);
+    f(&x);
     cout << "in main, x = " << x << endl;
 
     // INSERTION/DELETION
     // Objective: insert 3 in the 3rd position, then remove the element in the 4th position
-    int arr[6] = {1, 2, 0, 4, 5};
+    int arr3[6] = {1, 2, 0, 4, 5};
     // Insertion
     int n = 3;
     for(int i = 5; i >= n; i--) {
-        arr[i] = arr[i-1];
+        arr3[i] = arr3[i-1];
     }
-    arr[n-1] = 3;
+    arr3[n-1] = 3;
     for(int i = 0; i < 6; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
+        cout << arr3[i] << " ";
+    } cout << endl;
     // Deletion
     n = 4;
     for(int i = n-1; i < 6; i++) {
-        arr[i] = arr[i+1];
+        arr3[i] = arr3[i+1];
     }
     for(int i = 0; i < 6; i++) {
-        cout << arr[i] << " ";
+        cout << arr3[i] << " ";
     }
 
     return 0;
