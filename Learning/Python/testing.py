@@ -31,9 +31,14 @@
 
 # print("hello".replace('X', '', 1))
 
-a = {'a': 1, 'b': 2, 'c': 3}
-print(a['a'])
-if 'a' in a:
-  print('yep')
-if 'd' in a:
-  print('yep')
+# a = {'a': 1, 'b': 2, 'c': 3}
+# print(a['a'])
+# if 'a' in a:
+#   print('yep')
+# if 'd' in a:
+#   print('yep')
+import math
+left = 1
+right = 2
+k = print(ceil(2.5))
+print(k)
