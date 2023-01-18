@@ -37,8 +37,5 @@
 #   print('yep')
 # if 'd' in a:
 #   print('yep')
-import math
-left = 1
-right = 2
-k = print(ceil(2.5))
-print(k)
+
+print((0+1)//2)
