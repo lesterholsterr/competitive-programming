@@ -5,7 +5,7 @@ class Solution(object):
         :type k: int
         :rtype: List[int]
         """
-        # Solution 1: O(n^2)
+        # Solution 1: O(k*n)
         freq = {}
         for num in nums:
             if num in freq:
