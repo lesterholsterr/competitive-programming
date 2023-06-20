@@ -38,4 +38,7 @@
 # if 'd' in a:
 #   print('yep')
 
-print((0+1)//2)
+s = "Hello World!"
+t = list(s)
+t.sort()
+print(t)
