@@ -42,3 +42,6 @@ s = "Hello World!"
 t = list(s)
 t.sort()
 print(t)
+
+for i in range(3, 0, -1):
+    print(i)
