@@ -10,6 +10,11 @@ class Solution(object):
         :rtype: None Do not return anything, modify head in-place instead.
         """
 
+        # Overview: Probably could not have come up with the constant memory solution myself, but pretty good overall
+        # Leaps
+        # - Realize that this problem is straightforward if we had 2 lists: the first half, and the reversed second half
+        # - Always check where the final head and tail are pointing to avoid cycles
+
         # Initial Solution (20 minutes)
         # O(n) time and memory. We can probably do constant memory and a less scrappy solution...
         l = 0
@@ -50,7 +55,7 @@ class Solution(object):
         # Merge 2 halves
         first = head
         second = prev # Important to keep track of the "end state" of second and prev once the reversal is completed
-        # Since we started fast at head.next, we know the 2nd half of the list will always be shorter, so no need to check the first half
+        # Since we started fast at head.next, we know the 2nd half of the list will always be equal length or shorter, so no need to check the first half
         while second:
             temp1 = first.next
             temp2 = second.next
