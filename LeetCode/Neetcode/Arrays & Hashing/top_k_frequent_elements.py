@@ -35,7 +35,7 @@ class Solution(object):
                             break
                 numfreq = 1
                 num = n
-        
+
         if len(freq) == 0:
             freq.append(numfreq)
             res.append(num)
@@ -60,10 +60,10 @@ class Solution(object):
 
         for n in nums:
             count[n] = 1 + count.get(n, 0)
-        
+
         for n, c in count.items():
             freq[c].append(n)
-        
+
         for i in range(len(freq) - 1, 0, -1):
             for n in freq[i]:
                 res.append(n)
