@@ -19,9 +19,32 @@ class MyStack:
         return len(self.q) == 0
 
 
-# Your MyStack object will be instantiated and called as such:
-# obj = MyStack()
-# obj.push(x)
-# param_2 = obj.pop()
-# param_3 = obj.top()
-# param_4 = obj.empty()
+# Another wacky fun solution with constant time push/pop
+class Node:
+    def __init__(self, data, next):
+        self.data = data
+        self.next = next
+
+class MyStack:
+    def __init__(self):
+        self.q = deque()
+        self.back = None
+        self.length = 0
+        
+    def push(self, x: int) -> None:
+        n = Node(x, self.back)
+        self.q.append(n)
+        self.back = n
+        self.length += 1
+
+    def pop(self) -> int:
+        x = self.back.data
+        self.back = self.back.next
+        self.length -= 1
+        return x
+
+    def top(self) -> int:
+        return self.back.data
+
+    def empty(self) -> bool:
+        return self.length == 0
