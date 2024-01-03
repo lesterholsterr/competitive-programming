@@ -41,3 +41,19 @@ class Solution(object):
 
         dfs(root)
         return d[0]
+
+    # Did it by myself again :)
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+
+        def dfs(root):
+            if not root:
+                return [0, 0]
+            hl, dl = dfs(root.left)
+            hr, dr = dfs(root.right)
+            h = 1 + max(hl, hr)
+            d = max(dl, dr, hl+hr)
+            return [h, d]
+
+        return dfs(root)[1]
