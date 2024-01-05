@@ -1,59 +1,81 @@
+# Overall: The data structures used came naturally based on the problem requirements.
+#          Could have abstracted the "remove node" and "append node" functions as helpers.
+# Leaps
+# - How do I implement get() in constant time? (obviously need hashing)
+# - How do I implement put() in constant time? Need to remove an arbitrary element from an ordered list
+#   and append it. (obviously need a doubly LL)
+# - Realize that evicting a node should update the hashmap, meaning the node needs to contain a key
+#   in addition to a value (to remove the key-value pair from a hashmap, you need the key)
+
+# Initial Solution: 45 minutes, but it works!
 class Node:
-    def __init__(self, key, value):
-        self.key = key
-        self.value = value
-        self.next = self.prev = None
+    def __init__(self, data, next, prev):
+        self.data = data
+        self.next = next
+        self.prev = prev
 
-
-class LRUCache(object):
-
-    def __init__(self, capacity):
-        """
-        :type capacity: int
-        """
+class LRUCache:
+    def __init__(self, capacity: int):
         self.capacity = capacity
         self.size = 0
-        self.cache = {}
-        self.left = self.right = Node(0, 0)
-        self.left.next = self.right
-        self.right.prev = self.left
+        self.lru = None # linked list head
+        self.mru = None # linked list tail
+        self.hash = {}
 
-    def append(self, node):
-        prev, next = self.right.prev, self.right
-        prev.next = next.prev = node
-        node.prev, node.next = prev, next
+    def get(self, key: int) -> int:
+        if key in self.hash:
+            n = self.hash[key]
+            # remove node from existing position
+            if not n.next:
+                return n.data[1]
+            elif not n.prev:
+                self.lru = self.lru.next
+                self.lru.prev = None
+            else:
+                n.prev.next = n.next
+                n.next.prev = n.prev
 
-    def remove(self, node):
-        prev, next = node.prev, node.next
-        prev.next, next.prev = next, prev
+            # insert node to end of LL
+            self.mru.next = n
+            n.prev = self.mru
+            n.next = None
+            self.mru = self.mru.next
+            
+            return n.data[1]
 
-    def get(self, key):
-        """
-        :type key: int
-        :rtype: int
-        """
-        if key in self.cache:
-            self.remove(self.cache[key])
-            self.append(self.cache[key])
-            return self.cache[key].value
         return -1
 
-    def put(self, key, value):
-        """
-        :type key: int
-        :type value: int
-        :rtype: None
-        """
-        if key in self.cache:
-            self.remove(self.cache[key])
-        elif self.size == self.capacity:
-            lru = self.left.next
-            self.remove(lru)
-            del self.cache[lru.key]
-        else:
+    def put(self, key: int, value: int) -> None:
+        if key in self.hash:
+            self.hash[key].data = (key, value)
+            self.get(key) # This will update the cache
+
+        elif self.size != self.capacity:
+            if not self.lru:
+                self.lru = Node((key, value), None, None)
+                self.mru = self.lru
+            else:
+                self.mru.next = Node((key, value), None, self.mru)
+                self.mru = self.mru.next
+            
             self.size += 1
-        self.cache[key] = Node(key, value)
-        self.append(self.cache[key])
+            self.hash[key] = self.mru
+            
+        else:
+            # Evict LRU
+            del self.hash[self.lru.data[0]]
+            self.lru = self.lru.next
+
+            # Edge case: LRU capacity is 1. We revert to an empty cache and add a new node.
+            if not self.lru:
+                self.lru = Node((key, value), None, None)
+                self.mru = self.lru
+            else:
+                self.lru.prev = None
+                self.mru.next = Node((key, value), None, self.mru)
+                self.mru = self.mru.next
+            
+            self.hash[key] = self.mru
 
 
 # Your LRUCache object will be instantiated and called as such:
