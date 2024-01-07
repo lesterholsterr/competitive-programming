@@ -18,7 +18,7 @@ class LRUCache:
     def __init__(self, capacity: int):
         self.capacity = capacity
         self.size = 0
-        self.lru = None # linked list head
+        self.lru = None # linked list head 
         self.mru = None # linked list tail
         self.hash = {}
 
