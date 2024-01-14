@@ -1,19 +1,25 @@
+# Overall: Brute force results in duplicates. The only real challenge is creating a tree that is guaranteed to not give duplicates.
+# Leaps
+# - If left subtree contains "at least one 2", what must the right subtree contain to guarantee no duplicates?
+
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         res = []
 
-        def dfs(i, cur, total):
-            if total == target:
-                res.append(cur.copy())
+        def dfs(i, combo, sum):
+            if sum == target:
+                res.append(combo.copy())
                 return
-            if i >= len(candidates) or total > target:
+            elif sum > target or i == len(candidates):
                 return
 
-            cur.append(candidates[i])
-            dfs(i, cur, total + candidates[i])
+            combo.append(candidates[i])
+            sum += candidates[i]
+            dfs(i, combo, sum)
 
-            cur.pop()
-            dfs(i+1, cur, total)
+            x = combo.pop()
+            sum -= x
+            dfs(i+1, combo, sum)
 
         dfs(0, [], 0)
         return res
