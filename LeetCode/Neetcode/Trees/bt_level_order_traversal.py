@@ -1,7 +1,9 @@
-# Overall: Simple BFS review. Having trouble debugging so will come back to it tomorrow.
+# Overall: Simple BFS review. 
+# Trick for level order traversal: Use an inner for loop that runs len(q) times.
 
 # Initial Solution
 # Doesn't work. For some reason this_lvl keeps containing Nones and I can't figure out why
+# Update: Wow ok it was literally just the edge case of [] tripping it up. This solution works too.
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         res, cur_vals, this_lvl, next_lvl = [], [], [], []
@@ -22,8 +24,7 @@ class Solution:
             next_lvl = []
 
 # Neetcode Solution
-# Ok using the queue's length is a bit more elegant, but I still don't see 
-# how/why the queue would ever contain null nodes...
+# Ok using the queue's length is definitely more elegant
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         res = []
@@ -40,5 +41,5 @@ class Solution:
                     q.append(n.right)
             if lvl:
                 res.append(lvl.copy())
-        
+
         return res
