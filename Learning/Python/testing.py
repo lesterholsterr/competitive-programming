@@ -1,37 +1,28 @@
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-
-def addTwoNumbers(l1, l2):
-    n1, n2 = 0, 0
-
-    while l1:
-        n1 += l1.pop()
-        if len(l1) > 0:
-            n1 *= 10
-    while l2:
-        n2 += l2.pop()
-        if len(l2) > 0:
-            n2 *= 10
-    return n1 + n2
-    # n1 += n2
-    # ans = []
-    # while n1 != 0:
-    #     ans.append(n1 % 10)
-    #     n1 = int((n1 - n1 % 10) / 10)
+def array_mult(A, B):
+    def dot(v1, v2):
+        ans = 0
+        for i in range(len(v1)):
+            ans += v1[i] * v2[i]
+        return ans
     
-    return ans
+    def transpose(A):
+        AT = []
+        for i in range(len(A[0])):
+            col = []
+            for j in range(len(A)):
+                col.append(A[j][i])
+            AT.append(col)
+        return AT
+    
+    prod = []
+    BT = transpose(B)
+    for row in A:
+        v = []
+        for col in BT:
+            v.append(dot(row, col))
+        prod.append(v)
+    return prod
 
-# x = 1000000000000000000000000000466
-# print(x)
-# while x != 0:
-#     print(x % 10)
-#     x = (x - x%10) / 10
-#     print(x)
-
-# print(addTwoNumbers([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-#       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [5,6,4]))
-
-print(int(2**0.5))
+M1 = [[1, 2, 3], [-2, 3, 7]]
+M2 = [[1,0,0],[0,1,0],[0,0,1]]
+print(array_mult(M1, M2))
