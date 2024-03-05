@@ -1,35 +1,29 @@
-def array_mult(A, B):
-    def dot(v1, v2):
-        ans = 0
-        for i in range(len(v1)):
-            ans += v1[i] * v2[i]
-        return ans
+def minWindow(s: str, t: str) -> str:
+    ans = ""
+    ft, fs = {}, {}
+    for c in t:
+        if c not in ft:
+            ft[c] = 1
+            fs[c] = 0
+        else:
+            ft[c] += 1
     
-    def transpose(A):
-        AT = []
-        for i in range(len(A[0])):
-            col = []
-            for j in range(len(A)):
-                col.append(A[j][i])
-            AT.append(col)
-        return AT
+    have, need = 0, len(ft)
+    l = 0
+    for r in range(len(s)):
+        if s[r] in fs:
+            fs[s[r]] += 1
+            if fs[s[r]] == ft[s[r]]:
+                have += 1
+        while have == need:
+            if ans == "" or l-r+1 < len(ans):
+                ans = s[l:r+1]
+            if s[l] in fs:
+                fs[s[l]] -= 1
+                if fs[s[l]] == ft[s[l]] - 1:
+                    have -= 1
+            l += 1
     
-    prod = []
-    BT = transpose(B)
-    for row in A:
-        v = []
-        for col in BT:
-            v.append(dot(row, col))
-        prod.append(v)
-    return prod
+    return ans
 
-M1 = [[1, 2, 3], [-2, 3, 7]]
-M2 = [[1,0,0],[0,1,0],[0,0,1]]
-print(array_mult(M1, M2))
-
-position = [10,8,0,5,3]
-speed = [2,4,1,1,3]
-pair = [[p, s] for p, s in zip(position, speed)]
-
-print(pair)
-print(sorted(pair)[::-1])
+print(minWindow("cabwefgewcwaefgcf", "cae"))
