@@ -34,8 +34,6 @@ class Solution:
 # Neetcode Solution
 # Time: O(nlogk)
 # Merge sort + merge 2 lists. Definitely should review sorting. Would not have found this myself.
-
-
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
 
