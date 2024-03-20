@@ -1,4 +1,4 @@
-# Overall: Brute force was intuitive but using stack to optimize was not clear at intuitive to me.
+# Overall: Brute force was intuitive but using stack to optimize was not intuitive to me.
 # Strategy is to only look in one direction (eg. left to right). Idk how it would occur to someone
 # to try stack. And even if you do, algorithm still seems unintuitive.
 
@@ -37,8 +37,6 @@ class Solution:
         return largest
 
 # Neetcode Solution
-
-
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         largest = 0

@@ -1,29 +1,20 @@
-def minWindow(s: str, t: str) -> str:
-    ans = ""
-    ft, fs = {}, {}
-    for c in t:
-        if c not in ft:
-            ft[c] = 1
-            fs[c] = 0
-        else:
-            ft[c] += 1
-    
-    have, need = 0, len(ft)
-    l = 0
-    for r in range(len(s)):
-        if s[r] in fs:
-            fs[s[r]] += 1
-            if fs[s[r]] == ft[s[r]]:
-                have += 1
-        while have == need:
-            if ans == "" or l-r+1 < len(ans):
-                ans = s[l:r+1]
-            if s[l] in fs:
-                fs[s[l]] -= 1
-                if fs[s[l]] == ft[s[l]] - 1:
-                    have -= 1
-            l += 1
-    
-    return ans
+def largestRectangleArea(heights) -> int:
+    largest = 0
+    stack = []
 
-print(minWindow("cabwefgewcwaefgcf", "cae"))
+    for i in range(len(heights)):
+        start = i
+        while len(stack) != 0 and stack[-1][1] > heights[i]:
+            j, h = stack.pop()
+            largest = max(largest, h * (i-j))
+            start = j
+        stack.append((start, heights[i]))
+
+    l = len(heights)
+    while len(stack) != 0:
+        j, h = stack.pop()
+        largest = max(largest, h * (l-j))
+
+    return largest
+
+print(largestRectangleArea([2,1,2]))
