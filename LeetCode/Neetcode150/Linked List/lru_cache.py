@@ -78,7 +78,65 @@ class LRUCache:
             self.hash[key] = self.mru
 
 
-# Your LRUCache object will be instantiated and called as such:
-# obj = LRUCache(capacity)
-# param_1 = obj.get(key)
-# obj.put(key,value)
+# 11/19 Revisited. Well it seems I have regressed. Took way more submissions this time around. Sloppy performance all around
+# Improvements: most_recent and least_recent can be dummy nodes. That helps reduce the # of cases because node.prev and node.next 
+#               will never be null. Then you can abstract out methods like removeFromList() and insertIntoHead()
+class Node:
+    def __init__(self, key=0, val=0, next=None, prev=None):
+        self.key = key
+        self.val = val
+        self.next = next
+        self.prev = prev
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.keys = {} # key : pointer to val
+        self.most_recent = None # RHS of LL
+        self.least_recent = None # LHS of LL
+        self.cap = capacity
+        self.size = 0
+
+    def get(self, key: int) -> int:
+        if key in self.keys:
+            node = self.keys[key]
+            if not node.next:
+                pass # Node is most recent, do nothing
+            else:
+                if not node.prev: # Node is least recent, update least recent
+                    self.least_recent = self.least_recent.next
+                    self.least_recent.prev = None
+                else: # Node is in the middle, delete from middle
+                    node.prev.next = node.next
+                    node.next.prev = node.prev
+                
+                # MTF
+                self.most_recent.next = node
+                node.prev = self.most_recent
+                node.next = None
+                self.most_recent = self.most_recent.next
+            return node.val
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.keys: # update, no evict
+            self.keys[key].val = value
+            self.get(key) # MTF
+            return
+        elif self.size < self.cap: # add, no evict
+            self.size += 1
+        else: # add, with evict
+            least_recent_key = self.least_recent.key # invariant: self.least_recent != None
+            self.keys.pop(least_recent_key)
+            self.least_recent = self.least_recent.next
+            if self.least_recent:
+                self.least_recent.prev = None
+        
+        # Add to front
+        if self.least_recent:
+            self.most_recent.next = Node(key, value, None, self.most_recent)
+            self.most_recent = self.most_recent.next
+        else:
+            self.most_recent = Node(key, value, None, None)
+            self.least_recent = self.most_recent
+        
+        self.keys[key] = self.most_recent
