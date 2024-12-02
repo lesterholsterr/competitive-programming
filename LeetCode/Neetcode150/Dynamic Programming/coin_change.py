@@ -47,3 +47,16 @@ class Solution:
                     dp[i] = min(1+dp[i-c], dp[i])
         
         return dp[amount] if dp[amount] != inf else -1
+
+# Revisited - forgot the solution but arrived independently at the same thing, nice
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        coins.sort()
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+
+        for i in range(1, amount + 1):
+            for j in range(len(coins)):
+                if i - coins[j] >= 0:
+                    dp[i] = min(dp[i], 1 + dp[i - coins[j]])
+        return dp[-1] if dp[-1] != float('inf') else -1

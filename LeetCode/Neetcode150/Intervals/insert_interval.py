@@ -46,3 +46,24 @@ class Solution:
         
         ans.append(newInterval)
         return ans
+
+# Revisited - this is probably most intuitive and readable solution
+# There are 3 states - no overlap yet, overlap, overlap finished
+# First while loop handles the "no overlap yet"
+# Second while loop handles the "overlap"
+# Third state is handled in the return statement
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        res = []
+        i = 0
+
+        while i < len(intervals) and intervals[i][1] < newInterval[0]:
+            res.append(intervals[i])
+            i += 1
+        while i < len(intervals) and newInterval[1] >= intervals[i][0]:
+            newInterval[0] = min(newInterval[0], intervals[i][0])
+            newInterval[1] = max(newInterval[1], intervals[i][1])
+            i += 1
+        res.append(newInterval)
+
+        return res + intervals[i:]

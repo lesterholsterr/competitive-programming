@@ -21,8 +21,10 @@ class Solution(object):
             for j in range(i):
                 s += "()"
             for k in range(n-i):
-        
-        # Neetcode Solution
+                # ...
+
+class Solution:
+    def generateParenthesis(self, n):
         res = []
 
         def addParentheses(open, close, s):
@@ -37,4 +39,29 @@ class Solution(object):
                 addParentheses(open, close+1, s2)
 
         addParentheses(0, 0, "")
+        return res
+        
+
+# Revisited - Piece of cake now :)
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = []
+        cur = []
+
+        def bt(open: int, net: int) -> None:
+            if open == 0 and net == 0:
+                res.append(''.join(cur))
+                return
+            
+            if net > 0:
+                cur.append(')')
+                bt(open, net-1)
+                cur.pop()
+            
+            if open > 0:
+                cur.append('(')
+                bt(open-1, net+1)
+                cur.pop()
+
+        bt(n, 0)
         return res
